@@ -40,9 +40,20 @@
       }), {
         headers: { 'content-type': 'application/x-www-form-urlencoded' }
       });
-      console.log('Post /api/person-->', res.data)
+      console.log('Post /api/person--> formUrlEncoded', res.data)
     }
     formUrlEncoded();
+  </script>
+
+  <script>
+    async function json() {
+      const res = await axios.post('/api/person', {
+        name: 'cwy',
+        age: 31,
+      })
+      console.log('Post /api/person--> json', res.data)
+    }
+    json();
   </script>
 </body>
 </html>
