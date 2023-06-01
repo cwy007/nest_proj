@@ -8,7 +8,7 @@ import {
   Delete,
   Query,
   UseInterceptors,
-  UploadedFile,
+  UploadedFiles,
 } from '@nestjs/common';
 import { PersonService } from './person.service';
 import { CreatePersonDto } from './dto/create-person.dto';
@@ -42,7 +42,7 @@ export class PersonController {
   )
   body2(
     @Body() createPersonDto: CreatePersonDto,
-    @UploadedFile() files: Array<Express.Multer.File>,
+    @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
     console.log('files-->', files);
     return `received: ${JSON.stringify(createPersonDto)}`;
