@@ -27,6 +27,11 @@ export class PersonController {
   }
 
   @Post()
+  body(@Body() createPersonDto: CreatePersonDto) {
+    return `received: ${JSON.stringify(createPersonDto)}`;
+  }
+
+  @Post()
   create(@Body() createPersonDto: CreatePersonDto) {
     return this.personService.create(createPersonDto);
   }

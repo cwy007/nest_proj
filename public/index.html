@@ -5,10 +5,19 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://unpkg.com/axios@0.24.0/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/qs@6.10.2/dist/qs.js"></script>
   <title>static</title>
 </head>
 <body>
   测试静态资源请求
+
+  <script>
+    async function urlParam() {
+      const res = await axios.get('/api/person/1');
+      console.log('Get /api/persion ->', res.data)
+    }
+    urlParam();
+  </script>
 
   <script>
     async function query() {
@@ -18,9 +27,22 @@
           age: 31,
         }
       });
-      console.log('/api/person/find-->', res.data);
+      console.log('Get /api/person/find-->', res.data);
     }
     query();
+  </script>
+
+  <script>
+    async function formUrlEncoded() {
+      const res = await axios.post('/api/person', Qs.stringify({
+        name: 'cwy007',
+        age: 32,
+      }), {
+        headers: { 'content-type': 'application/x-www-form-urlencoded' }
+      });
+      console.log('Post /api/person-->', res.data)
+    }
+    formUrlEncoded();
   </script>
 </body>
 </html>
