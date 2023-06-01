@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/axios@0.24.0/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/qs@6.10.2/dist/qs.js"></script>
+  <title>static</title>
+</head>
+<body>
+  <!-- http://localhost:3009/static/param.html -->
+  <h1>5种数据传输的方式</h1>
+
+  <ol>
+    <li>url param</li>
+    <li>query</li>
+    <li>form-urlencoded</li>
+    <li>form-data</li>
+    <li>json</li>
+  </ol>
+
+  <script>
+    async function urlParam() {
+      const res = await axios.get('/api/person/1');
+      console.log('Get /api/persion ->', res.data)
+    }
+    urlParam();
+  </script>
+
+  <script>
+    async function query() {
+      const res = await axios.get('/api/person/find', {
+        params: {
+          name: 'cwy',
+          age: 31,
+        }
+      });
+      console.log('Get /api/person/find-->', res.data);
+    }
+    query();
+  </script>
+
+  <script>
+    async function formUrlEncoded() {
+      const res = await axios.post('/api/person', Qs.stringify({
+        name: 'cwy007',
+        age: 32,
+      }), {
+        headers: { 'content-type': 'application/x-www-form-urlencoded' }
+      });
+      console.log('Post /api/person--> formUrlEncoded', res.data)
+    }
+    formUrlEncoded();
+  </script>
+
+  <script>
+    async function json() {
+      const res = await axios.post('/api/person', {
+        name: 'cwy',
+        age: 31,
+      })
+      console.log('Post /api/person--> json', res.data)
+    }
+    json();
+  </script>
+
+  <input id="fileInput" type="file" multiple />
+  <script>
+    const fileInput = document.querySelector('#fileInput');
+
+    async function formData() {
+      const data = new FormData();
+      data.set('name', 'cwy');
+      data.set('age', 31);
+      data.set('file1', fileInput.files[0]);
+      data.set('files', fileInput.files[1]);
+
+      const res = await axios.post('/api/person/file', data, {
+        headers: { 'content-type': 'multipart/form-data' }
+      });
+      console.log('Post /api/person/file-->', res.data);
+    }
+
+    fileInput.onchange = formData;
+  </script>
+</body>
+</html>
