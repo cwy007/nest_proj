@@ -4,9 +4,86 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>static</title>
+  <title>测试静态资源请求</title>
+  <script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/qs@6.13.0/dist/qs.js"></script>
 </head>
 <body>
   测试静态资源请求
+
+  <div>
+    <input type="file" multiple id="fileInput">
+  </div>
+
+  <script>
+    async function urlParams() {
+      const res = await axios.get('/api/person/1');
+      console.log('urlParams -> res', res);
+    }
+
+    urlParams();
+  </script>
+
+  <script>
+    async function query() {
+      const res = await axios.get('/api/person/find', {
+        params: {
+          name: 'cwy007',
+          age: 32,
+        }
+      });
+      console.log('query--> res', res);
+    }
+
+    query();
+  </script>
+
+  <script>
+    async function formUrlEncoded() {
+      const res = await axios.post('/api/person', Qs.stringify({
+        name: 'cwy007 中国',
+        age: 32,
+      }), {
+        headers: { 'content-type': 'application/x-www-form-urlencoded' }
+      });
+
+      console.log('formUrlEncoded---> res', res);
+    }
+
+    formUrlEncoded();
+  </script>
+
+  <script>
+    async function json() {
+      const res = await axios.post('/api/person', {
+        name: 'cwy007',
+        age: 32
+      });
+
+      console.log('json--->res', res);
+    }
+
+    json();
+  </script>
+
+  <script>
+    const fileInput = document.querySelector('#fileInput');
+
+    async function formData() {
+      const data = new FormData();
+      data.set('name', 'cwy007');
+      data.set('age', 23);
+      data.set('file1', fileInput.files[0]);
+      data.set('file2', fileInput.files[1]);
+
+      const res = await axios.post('/api/person/file', data, {
+        headers: { 'content-type': 'multipart/form-data' }
+      });
+
+      console.log('formData-->res', res);
+    }
+
+    fileInput.onchange = formData;
+  </script>
 </body>
 </html>
