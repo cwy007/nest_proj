@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { AppService } from './app.service';
 
 // Guard 是路由守卫的意思，可以用于在调用某个 Controller 之前判断权限，返回 true 或者 false 来决定是否放行：
+// 路由的权限控制
 //
 @Injectable()
 export class LoginGuard implements CanActivate {

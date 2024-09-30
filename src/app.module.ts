@@ -9,8 +9,9 @@ import { Person2Module } from './person2/person2.module';
 import { CccModule } from './ccc/ccc.module';
 import { DddModule } from './ddd/ddd.module';
 import { LogMiddleware } from './log.middleware';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { LoginGuard } from './login.guard';
+import { TimeInterceptor } from './time.interceptor';
 
 // 这些自定义 provider 的方式里，最常用的是 useClass，不过我们一般会用简写，也就是直接指定 class。
 // useClass 的方式由 IoC 容器负责实例化，我们也可以用 useValue、useFactory 直接指定对象。
@@ -70,10 +71,14 @@ import { LoginGuard } from './login.guard';
       provide: 'fooo', // 这个是别名
       useExisting: 'person4',
     },
-    {
-      provide: APP_GUARD,
-      useClass: LoginGuard, // 启用全局-路由守卫-方式2
-    }
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: LoginGuard, // 启用全局-路由守卫-方式2
+    // },
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: TimeInterceptor, // 全局启用拦截器，作用于所有controller
+    // },
   ],
 })
 export class AppModule implements NestModule {

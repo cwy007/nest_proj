@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { NextFunction, Request, Response } from 'express';
 import { LoginGuard } from './login.guard';
+import { TimeInterceptor } from './time.interceptor';
 
 const PORT = 3009;
 
@@ -24,6 +25,9 @@ async function bootstrap() {
   // 而用 provider 的方式声明的 Guard 是在 IoC 容器里的，可以注入别的 provider：
   //
   // app.useGlobalGuards(new LoginGuard()); // 全局路由守卫 - 方式1
+
+  // 全局启用，作用域全部controller
+  // app.useGlobalInterceptors(new TimeInterceptor());
 
   await app.listen(PORT);
   console.log(`visit http://localhost:${PORT}`);
