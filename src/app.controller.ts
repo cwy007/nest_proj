@@ -1,12 +1,14 @@
-import { Controller, Get, Inject, Query, UseGuards, UseInterceptors, UsePipes } from '@nestjs/common';
+import { Controller, Get, Inject, Query, UseFilters, UseGuards, UseInterceptors, UsePipes } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LoginGuard } from './login.guard';
 import { TimeInterceptor } from './time.interceptor';
 import { ValidatePipe } from './validate.pipe';
+import { TestFilter } from './test.filter';
 
 @Controller()
 // @UseInterceptors(TimeInterceptor) // 作用于Controller中的每一个handler
 // @UsePipes(ValidatePipe) // 对整个controller都生效
+// @UsePipes(TestFilter)
 export class AppController {
   constructor(
     private readonly appService: AppService,
@@ -41,6 +43,7 @@ export class AppController {
   }
 
   @Get('ccc')
+  @UseFilters(TestFilter)
   ccc(@Query('num', ValidatePipe) num: number) {
     return num + 1;
   }

@@ -6,6 +6,7 @@ import { NextFunction, Request, Response } from 'express';
 import { LoginGuard } from './login.guard';
 import { TimeInterceptor } from './time.interceptor';
 import { ValidatePipe } from './validate.pipe';
+import { TestFilter } from './test.filter';
 
 const PORT = 3009;
 
@@ -32,6 +33,9 @@ async function bootstrap() {
 
   // 全局生效
   // app.useGlobalPipes(new ValidatePipe());
+
+  // 全局生效
+  // app.useGlobalFilters(new TestFilter());
 
   await app.listen(PORT);
   console.log(`visit http://localhost:${PORT}`);

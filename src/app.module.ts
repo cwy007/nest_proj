@@ -9,10 +9,11 @@ import { Person2Module } from './person2/person2.module';
 import { CccModule } from './ccc/ccc.module';
 import { DddModule } from './ddd/ddd.module';
 import { LogMiddleware } from './log.middleware';
-import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { LoginGuard } from './login.guard';
 import { TimeInterceptor } from './time.interceptor';
 import { ValidatePipe } from './validate.pipe';
+import { TestFilter } from './test.filter';
 
 // 这些自定义 provider 的方式里，最常用的是 useClass，不过我们一般会用简写，也就是直接指定 class。
 // useClass 的方式由 IoC 容器负责实例化，我们也可以用 useValue、useFactory 直接指定对象。
@@ -83,6 +84,10 @@ import { ValidatePipe } from './validate.pipe';
     // {
     //   provide: APP_PIPE,
     //   useClass: ValidatePipe, // 全局生效
+    // },
+    // {
+    //   provide: APP_FILTER, // 全局生效
+    //   useClass: TestFilter,
     // }
   ],
 })
