@@ -23,9 +23,11 @@ export class LoginGuard implements CanActivate {
 
     const classMetadata = this.reflector.get('roles', context.getClass());
     const methodMetadata = this.reflector.get('roles', context.getHandler());
+    const amethodMetadata = this.reflector.get('aaa', context.getHandler());
 
     console.log('classMetadata-->roles', classMetadata)
     console.log('methodMetadata-->roles', methodMetadata)
+    console.log('amethodMetadata-->roles', amethodMetadata)
 
     return true;
   }

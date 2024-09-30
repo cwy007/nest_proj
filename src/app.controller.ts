@@ -4,6 +4,10 @@ import { LoginGuard } from './login.guard';
 import { TimeInterceptor } from './time.interceptor';
 import { ValidatePipe } from './validate.pipe';
 import { TestFilter } from './test.filter';
+import { Aaa } from './aaa.decorator';
+import { Bbb } from './bbb.decorator';
+import { Ccc } from './ccc.decorator';
+import { MyHeaders, MyQuery } from './my-headers.decorator';
 
 @Controller()
 // @UseInterceptors(TimeInterceptor) // 作用于Controller中的每一个handler
@@ -32,9 +36,19 @@ export class AppController {
   @Get('aaa')
   @UseGuards(LoginGuard)
   @SetMetadata('roles', ['admin'])
+  @Aaa('admin')
   aaa(): string {
     console.log('aaa-->66');
     return 'aaa';
+  }
+
+  @Bbb('aaa2', 'admin') // 将多个装饰器和成一个
+  // @UseGuards(LoginGuard)
+  // @SetMetadata('roles', ['admin'])
+  // @Aaa('admin')
+  aaa2(): string {
+    console.log('aaa2-->66');
+    return 'aaa2';
   }
 
   @Get('bbb')
@@ -93,5 +107,26 @@ export class AppController {
       name: 'cwy007',
       age: 32,
     }
+  }
+
+  @Get('hello4')
+  getHello4(@Ccc() c) {
+    return c;
+  }
+
+  @Get('hello5')
+  getHello5(@Headers('Accept') headers1, @MyHeaders('Accept') headers2) {
+    console.log('headers1-->', headers1)
+    console.log('headers2-->', headers2)
+
+    return headers1 + headers2;
+  }
+
+  @Get('hello6')
+  getHello6(@Query('aaa') aaa, @MyQuery('bbb') bbb) {
+    console.log('aaa-->', aaa)
+    console.log('bbb-->', bbb)
+
+    return aaa + bbb;
   }
 }
