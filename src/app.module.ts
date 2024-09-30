@@ -6,13 +6,15 @@ import { XxxModule } from './xxx/xxx.module';
 import { PersonModule } from './person/person.module';
 import { BookModule } from './book/book.module';
 import { Person2Module } from './person2/person2.module';
+import { CccModule } from './ccc/ccc.module';
+import { DddModule } from './ddd/ddd.module';
 
 // 这些自定义 provider 的方式里，最常用的是 useClass，不过我们一般会用简写，也就是直接指定 class。
 // useClass 的方式由 IoC 容器负责实例化，我们也可以用 useValue、useFactory 直接指定对象。
 // useExisting 只是用来起别名的，有的场景下会用到。
 
 @Module({
-  imports: [AaaModule, XxxModule, PersonModule, BookModule, Person2Module],
+  imports: [AaaModule, XxxModule, PersonModule, BookModule, Person2Module, CccModule, DddModule],
   controllers: [AppController],
   providers: [
     AppService,

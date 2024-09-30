@@ -11,6 +11,11 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'public'), { prefix: '/static' });
   await app.listen(PORT);
   console.log(`visit http://localhost:${PORT}`);
+
+  // 3s 后调用 app.close() 触发销毁（app.close() 只是触发销毁逻辑，但不会真正退出进程）
+  setTimeout(() => {
+    app.close();
+  }, 3000)
 }
 
 bootstrap();
