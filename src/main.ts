@@ -5,6 +5,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { NextFunction, Request, Response } from 'express';
 import { LoginGuard } from './login.guard';
 import { TimeInterceptor } from './time.interceptor';
+import { ValidatePipe } from './validate.pipe';
 
 const PORT = 3009;
 
@@ -28,6 +29,9 @@ async function bootstrap() {
 
   // 全局启用，作用域全部controller
   // app.useGlobalInterceptors(new TimeInterceptor());
+
+  // 全局生效
+  // app.useGlobalPipes(new ValidatePipe());
 
   await app.listen(PORT);
   console.log(`visit http://localhost:${PORT}`);
