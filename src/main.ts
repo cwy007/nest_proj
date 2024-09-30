@@ -7,6 +7,7 @@ import { LoginGuard } from './login.guard';
 import { TimeInterceptor } from './time.interceptor';
 import { ValidatePipe } from './validate.pipe';
 import { TestFilter } from './test.filter';
+import * as session from 'express-session';
 
 const PORT = 3009;
 
@@ -14,6 +15,8 @@ const PORT = 3009;
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useStaticAssets(join(__dirname, '..', 'public'), { prefix: '/static' });
+  app.setBaseViewsDir(join(__dirname, '..', 'views'));
+  app.setViewEngine('hbs');
 
   // 全局中间件
   app.use(function(req: Request, res: Response, next: NextFunction) {
@@ -36,6 +39,12 @@ async function bootstrap() {
 
   // 全局生效
   // app.useGlobalFilters(new TestFilter());
+
+  // 指定加密的密钥和 cookie 的存活时间。
+  app.use(session({
+    secret: 'guang',
+    cookie: { maxAge: 100000 },
+  }));
 
   await app.listen(PORT);
   console.log(`visit http://localhost:${PORT}`);
