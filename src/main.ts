@@ -3,6 +3,7 @@ import { join } from 'path';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { NextFunction, Request, Response } from 'express';
+import { LoginGuard } from './login.guard';
 
 const PORT = 3009;
 
@@ -16,7 +17,13 @@ async function bootstrap() {
     console.log('before-->', req.url);
     next();
     console.log('after-->', req.url);
-  })
+  });
+
+  // 那为什么都是声明全局 Guard，需要有两种方式呢？
+  // 因为方式1是手动 new 的 Guard 实例，不在 IoC 容器里：
+  // 而用 provider 的方式声明的 Guard 是在 IoC 容器里的，可以注入别的 provider：
+  //
+  // app.useGlobalGuards(new LoginGuard()); // 全局路由守卫 - 方式1
 
   await app.listen(PORT);
   console.log(`visit http://localhost:${PORT}`);
