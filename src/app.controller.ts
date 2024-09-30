@@ -15,8 +15,21 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    console.log(this);
+    // console.log(this);
     // debugger
+    console.log('AppController getHello-->');
     return this.appService.getHello();
+  }
+
+  @Get('aaa')
+  aaa(): string {
+    console.log('aaa-->');
+    return 'aaa';
+  }
+
+  @Get('bbb')
+  bbb(): string {
+    console.log('bbb-->');
+    return 'bbb';
   }
 }
