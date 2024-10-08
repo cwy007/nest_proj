@@ -15,3 +15,10 @@ Nest 的 Middleware、Guard、Interceptor、Pipe、ExceptionFilter 都是 AOP �
 Nest 就是通过这种 AOP 的架构方式，实现了松耦合、易于维护和扩展的架构。
 
 <!-- https://juejin.cn/book/7226988578700525605/section/7227320664649105463 -->
+
+middleware 和 interceptor 功能类似，但也有不同，interceptor 可以拿到目标 class、handler 等，也可以调用 rxjs 的 operator 来处理响应，更适合处理具体的业务逻辑。
+它们都是 Nest AOP 思想的实现，但是 interceptor 更适合处理与具体业务相关的逻辑，而 middleware 适合更通用的处理逻辑。
+
+通过 IOC 实现了对象的自动创建、依赖的自动组装。
+
+通过 AOP 实现了通用逻辑的抽取和复用。

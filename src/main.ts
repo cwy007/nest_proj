@@ -8,6 +8,7 @@ import { TimeInterceptor } from './time.interceptor';
 import { ValidatePipe } from './validate.pipe';
 import { TestFilter } from './test.filter';
 import * as session from 'express-session';
+import { VersioningType } from '@nestjs/common';
 
 const PORT = 3009;
 
@@ -19,6 +20,7 @@ async function bootstrap() {
   app.setViewEngine('hbs');
 
   // 全局中间件
+  // 不需要依赖注入的情况
   app.use(function(req: Request, res: Response, next: NextFunction) {
     console.log('before-->', req.url);
     next();
@@ -46,12 +48,17 @@ async function bootstrap() {
     cookie: { maxAge: 100000 },
   }));
 
+  app.enableVersioning({
+    type: VersioningType.HEADER,
+    header: 'version',
+  })
+
   await app.listen(PORT);
   console.log(`visit http://localhost:${PORT}`);
 
   // 3s 后调用 app.close() 触发销毁（app.close() 只是触发销毁逻辑，但不会真正退出进程）
   // setTimeout(() => {
-  //   app.close();
+  //   app.close(); // 测试声明周期
   // }, 3000)
 }
 

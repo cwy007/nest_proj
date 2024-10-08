@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Query, SetMetadata, UseFilters, UseGuards, UseInterceptors, UsePipes, Headers, Ip, Session, Render } from '@nestjs/common';
+import { Controller, Get, Inject, Query, SetMetadata, UseFilters, UseGuards, UseInterceptors, UsePipes, Headers, Ip, Session, Render, VERSION_NEUTRAL, Version } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LoginGuard } from './login.guard';
 import { TimeInterceptor } from './time.interceptor';
@@ -9,7 +9,10 @@ import { Bbb } from './bbb.decorator';
 import { Ccc } from './ccc.decorator';
 import { MyHeaders, MyQuery } from './my-headers.decorator';
 
-@Controller()
+@Controller({
+  path: 'version',
+  version: VERSION_NEUTRAL,
+})
 // @UseInterceptors(TimeInterceptor) // 作用于Controller中的每一个handler
 // @UsePipes(ValidatePipe) // 对整个controller都生效
 // @UsePipes(TestFilter)
@@ -128,5 +131,16 @@ export class AppController {
     console.log('bbb-->', bbb)
 
     return aaa + bbb;
+  }
+
+  @Get('version')
+  version() {
+    return 'version';
+  }
+
+  @Version('2')
+  @Get('version')
+  version2() {
+    return 'version';
   }
 }
