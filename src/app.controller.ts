@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Query, SetMetadata, UseFilters, UseGuards, UseInterceptors, UsePipes, Headers, Ip, Session, Render, VERSION_NEUTRAL, Version } from '@nestjs/common';
+import { Controller, Get, Inject, Query, SetMetadata, UseFilters, UseGuards, UseInterceptors, UsePipes, Headers, Ip, Session, Render, VERSION_NEUTRAL, Version, Post, UploadedFile, Body, UploadedFiles, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LoginGuard } from './login.guard';
 import { TimeInterceptor } from './time.interceptor';
@@ -8,6 +8,7 @@ import { Aaa } from './aaa.decorator';
 import { Bbb } from './bbb.decorator';
 import { Ccc } from './ccc.decorator';
 import { MyHeaders, MyQuery } from './my-headers.decorator';
+import { AnyFilesInterceptor, FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller({
   path: 'version',
@@ -143,4 +144,60 @@ export class AppController {
   version2() {
     return 'version';
   }
+
+  @Post('aaa')
+  @UseInterceptors(FileInterceptor('aaa', {
+    dest: 'uploads',
+  }))
+  uploadFile(@UploadedFile() file: Express.Multer.File, @Body() body) {
+    console.log('body-->', body)
+    console.log('file-->', file)
+  }
+
+  // https://juejin.cn/book/7226988578700525605/section/7237073746689785893
+  @Post('aaa2')
+  @UseInterceptors(FilesInterceptor('aaa', 3, {
+    dest: 'uploads',
+  }))
+  uploadFiles(@UploadedFiles() file: Express.Multer.File, @Body() body) {
+    console.log('body-->', body)
+    console.log('file-->', file)
+  }
+
+  @Post('ccc')
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'aaa', maxCount: 2 },
+    { name: 'bbb', maxCount: 3 },
+  ], {
+    dest: 'uploads'
+  }))
+  uploadFileFields(@UploadedFiles() files: { aaa?: Express.Multer.File[], bbb?: Express.Multer.File[] }, @Body() body) {
+    console.log('body', body);
+    console.log('files', files);
+  }
+
+  @Post('ddd')
+  @UseInterceptors(AnyFilesInterceptor({
+    dest: 'uploads'
+  }))
+  uploadAnyFiles(@UploadedFiles() files: Array<Express.Multer.File>, @Body() body) {
+    console.log('body', body);
+    console.log('files', files);
+  }
+
+  @Post('fff')
+  @UseInterceptors(FileInterceptor('aaa', {
+    dest: 'uploads'
+  }))
+  uploadFile3(@UploadedFile(new ParseFilePipe({
+    validators: [
+      new MaxFileSizeValidator({ maxSize: 1000 }),
+      new FileTypeValidator({ fileType: 'image/jpeg' }),
+    ],
+  })) file: Express.Multer.File, @Body() body) {
+    console.log('body', body);
+    console.log('file', file);
+  }
+
+
 }
