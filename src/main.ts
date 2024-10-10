@@ -10,7 +10,7 @@ import { TestFilter } from './test.filter';
 import * as session from 'express-session';
 import { VersioningType } from '@nestjs/common';
 
-const PORT = 3009;
+const PORT = 3000;
 
 // main.ts 是负责启动 Nest 的 ioc 容器的
 async function bootstrap() {
@@ -52,6 +52,8 @@ async function bootstrap() {
     type: VersioningType.HEADER,
     header: 'version',
   })
+
+  app.enableCors(); // 开启跨域支持
 
   await app.listen(PORT);
   console.log(`visit http://localhost:${PORT}`);
