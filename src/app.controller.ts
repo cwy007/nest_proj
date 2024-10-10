@@ -224,6 +224,7 @@ export class AppController {
   merge(@Query('name') name: string) {
     const chunkDir = 'uploads/chunks_' + name;
     const files = fs.readdirSync(chunkDir);
+    files.sort((a, b) => +a.split('-').reverse()[0] - (+b.split('-').reverse()[0]));
 
     let count = 0;
     let startPos = 0;
