@@ -8,8 +8,8 @@ import { MyLogger } from 'src/MyLogger';
 export class CwyLoggerController {
   private logger = new Logger();
 
-  @Inject(MyLogger)
-  private myLogger: MyLogger
+  // @Inject(MyLogger)
+  // private myLogger: MyLogger
 
   constructor(private readonly cwyLoggerService: CwyLoggerService) {}
 
@@ -20,7 +20,7 @@ export class CwyLoggerController {
     this.logger.log('ccc', CwyLoggerController.name);
     this.logger.verbose('ddd', CwyLoggerController.name);
     this.logger.warn('eee', CwyLoggerController.name);
-    this.myLogger.warn('eee2', CwyLoggerController.name);
+    // this.myLogger.warn('eee2', CwyLoggerController.name);
 
     return this.cwyLoggerService.findAll();
   }

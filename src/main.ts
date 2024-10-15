@@ -22,6 +22,7 @@ async function bootstrap() {
     // bufferLogs: true,
   });
   // app.useLogger(app.get(MyLogger3))
+  app.useLogger(new MyLogger())
   app.useStaticAssets(join(__dirname, '..', 'public'), { prefix: '/static' });
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
