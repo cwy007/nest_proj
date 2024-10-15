@@ -9,12 +9,19 @@ import { ValidatePipe } from './validate.pipe';
 import { TestFilter } from './test.filter';
 import * as session from 'express-session';
 import { VersioningType } from '@nestjs/common';
+import { MyLogger } from './MyLogger';
+import { MyLogger3 } from './MyLogger3';
 
 const PORT = 3000;
 
 // main.ts 是负责启动 Nest 的 ioc 容器的
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, { cors: true });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    cors: true,
+    // logger: new MyLogger()
+    // bufferLogs: true,
+  });
+  // app.useLogger(app.get(MyLogger3))
   app.useStaticAssets(join(__dirname, '..', 'public'), { prefix: '/static' });
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('hbs');
