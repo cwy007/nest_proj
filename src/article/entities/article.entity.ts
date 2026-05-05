@@ -15,6 +15,11 @@ export class Article {
   })
   content: string;
 
+  @Column({
+    length: 30,
+  })
+  tags: string;
+
   @CreateDateColumn()
   createDate: Date;
 
