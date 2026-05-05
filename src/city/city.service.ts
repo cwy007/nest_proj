@@ -31,36 +31,51 @@ export class CityService {
     // }
     // await this.entityManager.save(City, childCity);
 
-    const city = new City();
-    city.name = '华南';
-    await this.entityManager.save(City, city);
+    // const city = new City();
+    // city.name = '华南';
+    // await this.entityManager.save(City, city);
 
-    const childCity1 = new City();
-    childCity1.name = '云南';
+    // const childCity1 = new City();
+    // childCity1.name = '云南';
+    // const parent = await this.entityManager.findOne(City, {
+    //   where: {
+    //     name: '华南',
+    //   },
+    // });
+    // if (parent) {
+    //   childCity1.parent = parent;
+    // }
+    // await this.entityManager.save(City, childCity1);
+
+    // const childCity2 = new City();
+    // childCity2.name = '昆明';
+
+    // const parent2 = await this.entityManager.findOne(City, {
+    //   where: {
+    //     name: '云南',
+    //   },
+    // });
+    // if (parent2) {
+    //   childCity2.parent = parent2;
+    // }
+    // await this.entityManager.save(City, childCity2);
+
+    // return this.entityManager.getTreeRepository(City).findTrees();
+
+    // return this.entityManager.getTreeRepository(City).findRoots();
+
     const parent = await this.entityManager.findOne(City, {
-      where: {
-        name: '华南',
-      },
-    });
-    if (parent) {
-      childCity1.parent = parent;
-    }
-    await this.entityManager.save(City, childCity1);
-
-    const childCity2 = new City();
-    childCity2.name = '昆明';
-
-    const parent2 = await this.entityManager.findOne(City, {
       where: {
         name: '云南',
       },
     });
-    if (parent2) {
-      childCity2.parent = parent2;
-    }
-    await this.entityManager.save(City, childCity2);
-
-    return this.entityManager.getTreeRepository(City).findTrees();
+    // return this.entityManager.getTreeRepository(City).findDescendantsTree(parent);
+    // return this.entityManager.getTreeRepository(City).findAncestorsTree(parent);
+    // return this.entityManager.getTreeRepository(City).findAncestors(parent);
+    // return this.entityManager.getTreeRepository(City).findDescendants(parent);
+    // return this.entityManager.getTreeRepository(City).find();
+    // return this.entityManager.getTreeRepository(City).countAncestors(parent);
+    return this.entityManager.getTreeRepository(City).countDescendants(parent);
   }
 
   findOne(id: number) {
