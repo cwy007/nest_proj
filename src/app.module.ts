@@ -22,6 +22,7 @@ import { LoggerModule } from './logger/logger.module';
 import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
 import { CityModule } from './city/city.module';
+import { City } from './city/entities/city.entity';
 
 // 这些自定义 provider 的方式里，最常用的是 useClass，不过我们一般会用简写，也就是直接指定 class。
 // useClass 的方式由 IoC 容器负责实例化，我们也可以用 useValue、useFactory 直接指定对象。
@@ -48,7 +49,7 @@ import { CityModule } from './city/city.module';
       database: 'typeorm_test',
       synchronize: true,
       logging: true,
-      entities: [User],
+      entities: [User, City],
       poolSize: 10,
       connectorPackage: 'mysql2',
       extra: {
