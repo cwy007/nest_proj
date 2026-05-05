@@ -10,6 +10,7 @@ import { Ccc } from './ccc.decorator';
 import { MyHeaders, MyQuery } from './my-headers.decorator';
 import { AnyFilesInterceptor, FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import * as fs from 'fs';
+import { ConfigService } from '@nestjs/config';
 
 @Controller({
   path: 'version',
@@ -28,7 +29,19 @@ export class AppController {
     @Inject('person3') private readonly person3: { name: string; desc: number },
     @Inject('person4') private readonly person4: { name: string; desc: number },
     @Inject('fooo') private readonly fooo: { name: string; desc: number },
-  ) {}
+    @Inject(ConfigService) private readonly configService: ConfigService,
+  ) { }
+
+  @Get('config')
+  config() {
+    return {
+      mysql_server_host: this.configService.get('mysql_server_host'),
+      mysql_server_port: this.configService.get('mysql_server_port'),
+      mysql_server_username: this.configService.get('mysql_server_username'),
+      mysql_server_password: this.configService.get('mysql_server_password'),
+      mysql_server_database: this.configService.get('mysql_server_database'),
+    };
+  }
 
   @Get()
   getHello(): string {
@@ -239,7 +252,7 @@ export class AppController {
         count++;
 
         if (count === files.length) {
-          fs.rm(chunkDir, { recursive: true }, () => {});
+          fs.rm(chunkDir, { recursive: true }, () => { });
         }
       });
 

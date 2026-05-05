@@ -25,6 +25,7 @@ import { CityModule } from './city/city.module';
 import { City } from './city/entities/city.entity';
 import { ArticleModule } from './article/article.module';
 import { Article } from './article/entities/article.entity';
+import { ConfigModule } from '@nestjs/config';
 
 // 这些自定义 provider 的方式里，最常用的是 useClass，不过我们一般会用简写，也就是直接指定 class。
 // useClass 的方式由 IoC 容器负责实例化，我们也可以用 useValue、useFactory 直接指定对象。
@@ -60,6 +61,21 @@ import { Article } from './article/entities/article.entity';
     }),
     CityModule,
     ArticleModule,
+    ConfigModule.forRoot({
+      isGlobal: true, // 全局生效，不需要在其他模块中导入 ConfigModule 就可以使用 ConfigService
+      // 还可以通过 envFilePath 属性指定 .env 文件路径，默认为项目根目录下的 .env
+      envFilePath: 'src/.env',
+      // 还可以通过 load 属性加载自定义的配置文件，支持同步和异步两种方式：
+      // load: [() => {
+      //   return {
+      //     mysql_server_host: process.env.mysql_server_host,
+      //     mysql_server_port: process.env.mysql_server_port,
+      //     mysql_server_username: process.env.mysql_server_username,
+      //     mysql_server_password: process.env.mysql_server_password,
+      //     mysql_server_database: process.env.mysql_server_database,
+      //   };
+      // }],
+    }),
   ],
   controllers: [AppController, HostController],
   providers: [
