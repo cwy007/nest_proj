@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  RelationId,
   Tree,
   TreeChildren,
   TreeParent,
@@ -34,4 +35,7 @@ export class City {
 
   @TreeParent()
   parent: City;
+
+  @RelationId((city: City) => city.parent)
+  parentId: number;
 }

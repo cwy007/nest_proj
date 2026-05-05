@@ -60,22 +60,22 @@ export class CityService {
     // }
     // await this.entityManager.save(City, childCity2);
 
-    // return this.entityManager.getTreeRepository(City).findTrees();
+    return this.entityManager.getTreeRepository(City).findTrees();
 
     // return this.entityManager.getTreeRepository(City).findRoots();
 
-    const parent = await this.entityManager.findOne(City, {
-      where: {
-        name: '云南',
-      },
-    });
+    // const parent = await this.entityManager.findOne(City, {
+    //   where: {
+    //     name: '云南',
+    //   },
+    // });
     // return this.entityManager.getTreeRepository(City).findDescendantsTree(parent);
     // return this.entityManager.getTreeRepository(City).findAncestorsTree(parent);
     // return this.entityManager.getTreeRepository(City).findAncestors(parent);
     // return this.entityManager.getTreeRepository(City).findDescendants(parent);
     // return this.entityManager.getTreeRepository(City).find();
     // return this.entityManager.getTreeRepository(City).countAncestors(parent);
-    return this.entityManager.getTreeRepository(City).countDescendants(parent);
+    // return this.entityManager.getTreeRepository(City).countDescendants(parent);
   }
 
   findOne(id: number) {
