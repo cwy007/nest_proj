@@ -15,21 +15,50 @@ export class CityService {
   }
 
   async findAll() {
+    // const city = new City();
+    // city.name = '华北';
+    // await this.entityManager.save(City, city);
+
+    // const childCity = new City();
+    // childCity.name = '北京';
+    // const parent = await this.entityManager.findOne(City, {
+    //   where: {
+    //     name: '华北',
+    //   },
+    // });
+    // if (parent) {
+    //   childCity.parent = parent;
+    // }
+    // await this.entityManager.save(City, childCity);
+
     const city = new City();
-    city.name = '华北';
+    city.name = '华南';
     await this.entityManager.save(City, city);
 
-    const childCity = new City();
-    childCity.name = '北京';
+    const childCity1 = new City();
+    childCity1.name = '云南';
     const parent = await this.entityManager.findOne(City, {
       where: {
-        name: '华北',
+        name: '华南',
       },
     });
     if (parent) {
-      childCity.parent = parent;
+      childCity1.parent = parent;
     }
-    await this.entityManager.save(City, childCity);
+    await this.entityManager.save(City, childCity1);
+
+    const childCity2 = new City();
+    childCity2.name = '昆明';
+
+    const parent2 = await this.entityManager.findOne(City, {
+      where: {
+        name: '云南',
+      },
+    });
+    if (parent2) {
+      childCity2.parent = parent2;
+    }
+    await this.entityManager.save(City, childCity2);
 
     return this.entityManager.getTreeRepository(City).findTrees();
   }
