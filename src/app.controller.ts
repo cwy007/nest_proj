@@ -44,7 +44,7 @@ export class AppController {
   }
 
   @Get()
-  getHello(): string {
+  async getHello(): Promise<string> {
     // console.log(this);
     // debugger
     console.log('AppController getHello-->');

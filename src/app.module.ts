@@ -26,6 +26,7 @@ import { City } from './city/entities/city.entity';
 import { ArticleModule } from './article/article.module';
 import { Article } from './article/entities/article.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { createClient } from '@redis/client';
 
 // 这些自定义 provider 的方式里，最常用的是 useClass，不过我们一般会用简写，也就是直接指定 class。
 // useClass 的方式由 IoC 容器负责实例化，我们也可以用 useValue、useFactory 直接指定对象。
@@ -83,6 +84,20 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   controllers: [AppController, HostController],
   providers: [
     AppService,
+    {
+      provide: 'REDIS_CLIENT',
+      useFactory() {
+        const redis = createClient({
+          // url: 'redis://localhost:6379',
+          socket: {
+            host: 'localhost',
+            port: 6379,
+          },
+        });
+        redis.connect();
+        return redis;
+      },
+    },
     MyLogger3,
     {
       provide: 'app_service',
