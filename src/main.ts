@@ -29,7 +29,7 @@ async function bootstrap() {
 
   // 全局中间件
   // 不需要依赖注入的情况
-  app.use(function(req: Request, res: Response, next: NextFunction) {
+  app.use(function (req: Request, res: Response, next: NextFunction) {
     console.log('before-->', req.url);
     next();
     console.log('after-->', req.url);
@@ -51,10 +51,16 @@ async function bootstrap() {
   // app.useGlobalFilters(new TestFilter());
 
   // 指定加密的密钥和 cookie 的存活时间。
+  // app.use(session({
+  //   secret: 'guang',
+  //   cookie: { maxAge: 100000 },
+  // }));
+
   app.use(session({
-    secret: 'guang',
-    cookie: { maxAge: 100000 },
-  }));
+    secret: 'cwy007',
+    resave: false,
+    saveUninitialized: false,
+  }))
 
   app.enableVersioning({
     type: VersioningType.HEADER,
