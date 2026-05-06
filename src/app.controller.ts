@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Query, SetMetadata, UseFilters, UseGuards, UseInterceptors, UsePipes, Headers, Ip, Session, Render, VERSION_NEUTRAL, Version, Post, UploadedFile, Body, UploadedFiles, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator } from '@nestjs/common';
+import { Controller, Get, Inject, Query, SetMetadata, UseFilters, UseGuards, UseInterceptors, UsePipes, Headers, Ip, Session, Render, VERSION_NEUTRAL, Version, Post, UploadedFile, Body, UploadedFiles, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, CacheTTL } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LoginGuard } from './login.guard';
 import { TimeInterceptor } from './time.interceptor';
@@ -11,7 +11,7 @@ import { MyHeaders, MyQuery } from './my-headers.decorator';
 import { AnyFilesInterceptor, FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
-import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
+import { CACHE_MANAGER, Cache, CacheInterceptor, CacheKey } from '@nestjs/cache-manager';
 
 @Controller({
   path: 'version',
@@ -51,6 +51,14 @@ export class AppController {
   async delCache() {
     await this.cacheManager.del('name');
     return 'ok';
+  }
+
+  @Get('hit-cache-interceptor')
+  @CacheKey('hit-cache-interceptor') // 设置这个handler的缓存key
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(10000) // cache-manager v5+ 中，TTL 单位是毫秒。10000ms = 10秒
+  hitCacheInterceptor() {
+    return 'hit cache interceptor ' + new Date().getTime();
   }
 
   @Get('config')
