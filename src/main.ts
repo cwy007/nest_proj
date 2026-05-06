@@ -58,8 +58,8 @@ async function bootstrap() {
 
   app.use(session({
     secret: 'cwy007',
-    resave: false,
-    saveUninitialized: false,
+    resave: false, // resave 为 true 是每次访问都会更新 session，不管有没有修改 session 的内容，而 false 是只有 session 内容变了才会去更新 session
+    saveUninitialized: false, // saveUninitialized 设置为 true 是不管是否设置 session，都会初始化一个空的 session 对象。
   }))
 
   app.enableVersioning({

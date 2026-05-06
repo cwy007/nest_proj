@@ -37,6 +37,13 @@ export class AppController {
   @Inject(CACHE_MANAGER)
   private readonly cacheManager: Cache
 
+  @Get('session')
+  getSession(@Session() session) {
+    console.log('session', session)
+    session.count = session.count ? session.count + 1 : 1;
+    return session;
+  }
+
   @Get('set')
   async setCache(@Query('name') name: string) {
     await this.cacheManager.set('name', name);
