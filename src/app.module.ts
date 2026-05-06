@@ -29,6 +29,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { createClient } from '@redis/client';
 import { CacheModule } from '@nestjs/cache-manager';
 import KeyvRedis from '@keyv/redis';
+import { JwtModule } from '@nestjs/jwt';
 
 // 这些自定义 provider 的方式里，最常用的是 useClass，不过我们一般会用简写，也就是直接指定 class。
 // useClass 的方式由 IoC 容器负责实例化，我们也可以用 useValue、useFactory 直接指定对象。
@@ -46,6 +47,10 @@ import KeyvRedis from '@keyv/redis';
     CwyLoggerModule,
     LoggerModule,
     UserModule,
+    JwtModule.register({
+      secret: 'cwy007',
+      signOptions: { expiresIn: '7d' },
+    }),
     CacheModule.registerAsync({
       isGlobal: true,
       useFactory: () => ({

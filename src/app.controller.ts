@@ -1,4 +1,4 @@
-import { Controller, Get, Inject, Query, SetMetadata, UseFilters, UseGuards, UseInterceptors, UsePipes, Headers, Ip, Session, Render, VERSION_NEUTRAL, Version, Post, UploadedFile, Body, UploadedFiles, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, CacheTTL } from '@nestjs/common';
+import { Controller, Get, Inject, Query, SetMetadata, UseFilters, UseGuards, UseInterceptors, UsePipes, Headers, Ip, Session, Render, VERSION_NEUTRAL, Version, Post, UploadedFile, Body, UploadedFiles, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, CacheTTL, Res, UnauthorizedException } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LoginGuard } from './login.guard';
 import { TimeInterceptor } from './time.interceptor';
@@ -13,6 +13,7 @@ import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
 import { CACHE_MANAGER, Cache, CacheInterceptor, CacheKey } from '@nestjs/cache-manager';
 import { MyCacheInterceptor } from './my-cache.interceptor';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller({
   path: 'version',
@@ -36,6 +37,32 @@ export class AppController {
 
   @Inject(CACHE_MANAGER)
   private readonly cacheManager: Cache
+
+  @Inject(JwtService)
+  private readonly jwtService: JwtService
+
+  @Get('jwt')
+  jwt(@Headers('Authorization') authorization: string, @Res({ passthrough: true }) res) {
+    if (authorization) {
+      try {
+        const token = authorization.split(' ')[1];
+        const data = this.jwtService.verify(token);
+        const newToken = this.jwtService.sign({ count: data.count + 1 });
+        res.setHeader('token', newToken);
+        return this.jwtService.verify(newToken);
+      } catch (error) {
+        console.log('error-->', error);
+        throw new UnauthorizedException('Invalid token');
+      }
+    } else {
+      const token = this.jwtService.sign({ count: 1 });
+      console.log('token-->', token);
+      res.setHeader('token', token);
+      // verify 方法会验证 token 的有效性，如果 token 无效或者过期，会抛出异常。
+      // 如果 token 有效，会返回 token 中的 payload。
+      return this.jwtService.verify(token);
+    }
+  }
 
   @Get('session')
   getSession(@Session() session) {
