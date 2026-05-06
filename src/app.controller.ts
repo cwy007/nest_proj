@@ -12,6 +12,7 @@ import { AnyFilesInterceptor, FileFieldsInterceptor, FileInterceptor, FilesInter
 import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
 import { CACHE_MANAGER, Cache, CacheInterceptor, CacheKey } from '@nestjs/cache-manager';
+import { MyCacheInterceptor } from './my-cache.interceptor';
 
 @Controller({
   path: 'version',
@@ -59,6 +60,12 @@ export class AppController {
   @CacheTTL(10000) // cache-manager v5+ 中，TTL 单位是毫秒。10000ms = 10秒
   hitCacheInterceptor() {
     return 'hit cache interceptor ' + new Date().getTime();
+  }
+
+  @Get('test-my-cache-interceptor')
+  @UseInterceptors(MyCacheInterceptor)
+  async testMyCacheInterceptor() {
+    return 'test my cache interceptor ' + new Date().getTime();
   }
 
   @Get('config')
