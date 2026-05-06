@@ -11,6 +11,7 @@ import { MyHeaders, MyQuery } from './my-headers.decorator';
 import { AnyFilesInterceptor, FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
+import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 
 @Controller({
   path: 'version',
@@ -31,6 +32,26 @@ export class AppController {
     @Inject('fooo') private readonly fooo: { name: string; desc: number },
     @Inject(ConfigService) private readonly configService: ConfigService,
   ) { }
+
+  @Inject(CACHE_MANAGER)
+  private readonly cacheManager: Cache
+
+  @Get('set')
+  async setCache(@Query('name') name: string) {
+    await this.cacheManager.set('name', name);
+    return 'ok';
+  }
+
+  @Get('get')
+  async getCache() {
+    return await this.cacheManager.get('name');
+  }
+
+  @Get('del')
+  async delCache() {
+    await this.cacheManager.del('name');
+    return 'ok';
+  }
 
   @Get('config')
   config() {
